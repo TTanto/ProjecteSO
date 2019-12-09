@@ -1,8 +1,8 @@
 public class Proceso {
     private int tArribada;
-    private int tEspera;
-    private int tRetorn;
-    private int tResposta;
+    private int tEspera = 0;
+    private int tRetorn = 0;
+    private int tResposta = 0;
 
     private boolean acabado;
     private String name;
@@ -121,13 +121,17 @@ public class Proceso {
     }
     public void doEs(){
         this.resolucionProceso = this.resolucionProceso + "W";
+        this.tRetorn++;
     }
     public void doExecute(){
         this.resolucionProceso = this.resolucionProceso + "E";
+        this.tRetorn++;
     }
 
     public void doWait(){
         this.resolucionProceso = this.resolucionProceso + "P";
+        this.tEspera++;
+        this.tRetorn++;
     }
     public void doFinish(){
         this.resolucionProceso = this.resolucionProceso + "F";
