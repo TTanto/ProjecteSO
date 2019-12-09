@@ -1,0 +1,5 @@
+FIFO no apropiatiu: Felip
+SJF apropiatiu: Hidalgo
+SJF no apropiatiu: Ion
+Prioritat: Carlos
+RoundRobin: Iván
