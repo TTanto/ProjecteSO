@@ -1,14 +1,19 @@
 import java.io.*;
+import java.util.Arrays;
+import java.util.List;
 import java.util.StringTokenizer;
 
 public class Simulacio
 {
-    private Proces[] arrayProces;
-    private int casellaActual;
+    private String[] array_rafaga;
+    private List<Proceso> arrayProces;
+    private int [] array_tArribada;
+    private int [] array_prioridad;
     private int quantum;
+    private int total_p;
 
     //Mètode de llegir fitxer
-    public Character[][] llegirFitxer(boolean verbose) throws IOException {
+    public String[]llegirFitxer(boolean verbose) throws IOException {
 
         //Fet per Joan Rialp, Oriol Figueras, Sergi Alsina
         //NOTA : Verbose s'utilitza per si vols veure els printf d'aquesta funcio
@@ -29,7 +34,8 @@ public class Simulacio
 
         //Creem una array bidimensional amb el total de processos que hi an
         if (verbose) {System.out.println("TOTAL PROCESOS : " + st.countTokens());}
-        Character [][] array= new Character[st.countTokens()][];
+        String[] array= new String[st.countTokens()];
+        this.total_p = st.countTokens();
 
         int j=0;
 
@@ -37,14 +43,7 @@ public class Simulacio
         while (st.hasMoreTokens())
         {
             prova = st.nextToken();
-            array[j] = new Character[prova.length()];
-
-            //Separem l'String en chars i les posem a la posició corresponent a l'array bidimensional
-            for (int i=0; i<prova.length();i++)
-            {
-                array[j][i] = prova.charAt(i);
-            }
-
+            array[j] = prova;
             j++;
         }
 
@@ -52,49 +51,63 @@ public class Simulacio
         {
             for (int i = 0; i < array.length; i++)
             {
-                System.out.println("L'ARRAY A LA POSICIÓ " + i + " CONTÉ: ");
-
-                for (int k = 0; k < array[i].length; k++)
-                {
-                    System.out.print(array[i][k]);
-                }
-
-                System.out.println();
+                System.out.println("L'ARRAY A LA POSICIÓ " + i + " CONTÉ: " + array[i] );
             }
         }
-
         return array;
     }
 
-    //Canviar l'estat del procès
-    public void changeState(int state, Proces proces)
+    public List create_List_Proces() throws IOException
     {
+        // Un cop llegit el fitxer de text i tenim les dades (temps arribada i prioritat) de
+        // cada proces, creem una Llista de procesos amb totes les dades
 
+        //Exemple amb 4 procesos :
+        //Array t_Arribada = [0,5,1]
+        //Array  prioritats = [1,2,3]
+        //Array rafaga = ["EEEE", "EEEEEEEEEEWE", "EWWWWWWWWWWE"]
+        //Proces 1 --> temps_arribada = 0,  prioritat = 1,  rafaga = "EEEE"
+        //Proces 1 --> temps_arribada = 5,  prioritat = 2,  rafaga = "EEEEEEEEEEWE"
+        //Proces 1 --> temps_arribada = 1,  prioritat = 3,  rafaga = "EWWWWWWWWWWE"
+
+
+        for (int i =0; i < total_p; i++)
+        {
+            Proceso p = new Proceso(array_tArribada[i], "test", array_prioridad[i], array_rafaga[i]);
+            arrayProces.add(p);
+        }
+        return arrayProces;
     }
 
-    //Parar la simulació
-    public void stop()
+    public Simulacio(int[]array_temps_arribada, int[] array_prioritat, int quantum ) throws IOException
     {
-
+        this.array_rafaga = llegirFitxer(false);
+        set_t_Arribada(array_temps_arribada);
+        set_Prioritat(array_prioritat);
+        set_quantum(quantum);
+        create_List_Proces();
     }
 
-    //Continuar la simulació
-    public void continue_()
+    public void set_t_Arribada(int[] array)
     {
-
+        this.array_tArribada = array;
     }
 
-    //Resetejar la simulació
-    public void restart()
+    public void set_Prioritat(int[] array)
     {
-
+        this.array_prioridad = array;
     }
 
-
-    //Triar entre diferents planificadors
-    public void chosePlan()
+    public void set_quantum(int quantum)
     {
+        this.quantum = quantum;
+    }
 
+    public static void main (String [ ] args) throws IOException
+    {
+        int[] arrayprova = null;
+        Simulacio sim = new Simulacio(arrayprova,arrayprova,0);
+        Ejecucion ej = new Ejecucion(sim.arrayProces, false, "sfj");
     }
 
 }
