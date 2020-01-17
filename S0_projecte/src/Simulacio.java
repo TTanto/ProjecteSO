@@ -15,7 +15,7 @@ public class Simulacio
 
         //Path conté la ruta del fitcher que volem llegir
         String path = System.getProperty("user.dir");
-        File file = new File(path + "\\src\\prova.txt");
+        File file = new File(path + "\\src\\procesos.txt");
 
         //Printem la ruta del fitcher
         if (verbose) {System.out.println("LA RUTA DEL FITXER ÉS : " + file);}
@@ -52,7 +52,7 @@ public class Simulacio
         {
             for (int i = 0; i < array.length; i++)
             {
-                System.out.println("L'ARRAY A LA POSICIÍ " + i + " CONTÉ: ");
+                System.out.println("L'ARRAY A LA POSICIÓ " + i + " CONTÉ: ");
 
                 for (int k = 0; k < array[i].length; k++)
                 {
