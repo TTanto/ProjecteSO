@@ -2,6 +2,7 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.StringTokenizer;
 
@@ -16,9 +17,16 @@ public class Simulacio
 
     private List<String> resultats;
 
+    public void printAllData(){
+        for(int i = 0; i < total_p; i++){
+            System.out.println("Procés "+ i + ",  temps d'arribada : " + arrayProces.get(i).gettArribada());
+            System.out.println("Procés "+ i + ",  Rafaga : " + arrayProces.get(i).getRafaga());
+            System.out.println("Procés "+ i + ",  prioritat : " + arrayProces.get(i).getPrioridad());
+        }
 
+    }
     //Mètode de llegir fitxer
-    public String[]llegirFitxer(String URL, boolean verbose) throws IOException {
+    public void llegirFitxer(String URL, boolean verbose) throws IOException {
 
         //Fet per Joan Rialp, Oriol Figueras, Sergi Alsina
         //NOTA : Verbose s'utilitza per si vols veure els printf d'aquesta funcio
@@ -67,7 +75,7 @@ public class Simulacio
                 System.out.println("L'ARRAY A LA POSICIÓ " + i + " CONTÉ: " + array[i] );
             }
         }
-        return array;
+        setArray_rafaga(array);
     }
 
     public List create_List_Proces() throws IOException
@@ -83,6 +91,7 @@ public class Simulacio
         //Proces 1 --> temps_arribada = 5,  prioritat = 2,  rafaga = "EEEEEEEEEEWE"
         //Proces 1 --> temps_arribada = 1,  prioritat = 3,  rafaga = "EWWWWWWWWWWE"
 
+        arrayProces = new ArrayList<Proceso>();
 
         for (int i =0; i < total_p; i++)
         {
@@ -111,6 +120,12 @@ public class Simulacio
     {
         this.array_tArribada = array;
     }
+    public void setArray_rafaga(String[] array){
+
+        this.array_rafaga = array;
+        this.total_p = array.length;
+
+    }
 
     public void set_Prioritat(int[] array)
     {
@@ -120,6 +135,10 @@ public class Simulacio
     public void set_quantum(int quantum)
     {
         this.quantum = quantum;
+    }
+
+    public int getTotalProc(){
+        return this.total_p;
     }
 
 }

@@ -23,7 +23,7 @@ public class Init extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 Data dadesInit = new Data();
                 dadesInit.pack();
-                dadesInit.setSize(400,400);
+                dadesInit.setSize(800,400);
                 dadesInit.setVisible(true);
 
             }
