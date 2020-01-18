@@ -21,7 +21,8 @@ public class Init extends JFrame {
 
         button_ini.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                Dades_ini dadesInit = new Dades_ini();
+                Data dadesInit = new Data();
+                dadesInit.pack();
                 dadesInit.setSize(400,400);
                 dadesInit.setVisible(true);
 
