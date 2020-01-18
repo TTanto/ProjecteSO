@@ -26,12 +26,12 @@ public class Simulacio
         //Path conté la ruta del fitcher que volem llegir
 //        String path = System.getProperty("user.dir");
         char[] path = URL.toCharArray();
-        //for( int i = 0; i< URL.length(); i++){
-           // if(path[i] == '/'){
-             //   path[i] = '\\'  ;
-           // }
-       // }
-       // URL = String.valueOf(path);
+        for( int i = 0; i< URL.length(); i++){
+            if(path[i] == '/'){
+                path[i] = '\\'  ;
+            }
+        }
+        URL = String.valueOf(path);
 
         File file = new File(URL);
 
