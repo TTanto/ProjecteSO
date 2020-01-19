@@ -77,7 +77,7 @@ public class Data extends JDialog {
         numCPU = Integer.parseInt(text_ncpu.getText());
         Simulacio s = new Simulacio();
         s.llegirFitxer(_url, true);
-        Data_2 d2 = new Data_2(s.getTotalProc(), comboBox1.getSelectedItem().toString(), s);
+        Data_2 d2 = new Data_2(s.getTotalProc(), comboBox1.getSelectedItem().toString(), s, numCPU);
         d2.pack();
         d2.setSize(600,400);
         d2.setVisible(true);

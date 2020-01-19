@@ -9,7 +9,7 @@ public class Init extends JFrame {
     public static void main(String[] args) {
         Init main = new Init();
         main.pack();
-        main.setSize(,200);
+        main.setSize(600,200);
         main.setVisible(true);
 
     }

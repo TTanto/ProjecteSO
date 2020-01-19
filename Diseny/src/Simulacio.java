@@ -12,6 +12,7 @@ public class Simulacio
     private List<Proceso> arrayProces;
     private int [] array_tArribada;
     private int [] array_prioridad;
+    private int CPU;
     private int quantum;
     private int total_p;
 
@@ -22,6 +23,7 @@ public class Simulacio
             System.out.println("Procés "+ i + ",  temps d'arribada : " + arrayProces.get(i).gettArribada());
             System.out.println("Procés "+ i + ",  Rafaga : " + arrayProces.get(i).getRafaga());
             System.out.println("Procés "+ i + ",  prioritat : " + arrayProces.get(i).getPrioridad());
+            System.out.println("Procés "+ i + ",  numero de CPU's : " + CPU);
         }
 
     }

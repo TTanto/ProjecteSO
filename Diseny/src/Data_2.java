@@ -16,7 +16,7 @@ public class Data_2 extends JDialog {
     public String plan;
 
 
-    public Data_2(int proces, String plan, Simulacio s) {
+    public Data_2(int proces, String plan, Simulacio s, int numCPU) {
         this.plan = plan;
         System.out.println(plan);
         this.s = s;
@@ -99,7 +99,9 @@ public class Data_2 extends JDialog {
         s.printAllData();
 
         e = new Ejecucion(s.getListProc(),false,s.get_quantum(), plan);
-        Resultat r = new Resultat(e);
+        Resultat r = new Resultat(e,plan);
+        r.pack();
+        r.setSize(400,400);
         r.setVisible(true);
 
 
