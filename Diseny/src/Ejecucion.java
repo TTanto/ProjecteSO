@@ -1,5 +1,6 @@
 import java.lang.reflect.Array;
 import java.util.List;
+import java.util.Stack;
 
 public class Ejecucion {
     public List<Proceso> entrada; //Lista de lso procesos a pasar por la cpu
@@ -57,148 +58,113 @@ public class Ejecucion {
     }
 
 
-    boolean is_on_p(Proceso array[], Proceso p)
+    boolean isOnStack(Stack pila, Proceso p)
     {
-        for (int i =0; i< array.length; i++)
-        {
-            if (array[i] != (null))
-            {
-                if (array[i].getName().equals(p.getName()))
-                {
-                    return true;
-                }
-            }
-        }
-
-        return false;
-
+        return  pila.contains(p);
     }
-    boolean get_Proc_Lliure(Proceso array[], Proceso p)
+
+    boolean have_Procesor(Stack<Proceso> pila, Proceso p)
     {
-        if (is_on_p(array,p))
+        if (!pila.isEmpty())
         {
+            return (pila.get(0).equals(p));
+        }
+        else
+        {
+            pila.push(p);
             return true;
         }
-        for (int i =0; i< array.length; i++)
-        {
-            if (array[i] == (null))
-            {
-                if(p.getRafaga().charAt(p.getEstado_proc())  != 'W')
-                {
-                    array[i] = p;
-                }
-                return true;
-            }
-        }
-        return false;
     }
 
-    void set_Proc_Lliure(Proceso array[], Proceso p)
-    {
-        for (int i =0; i< array.length; i++)
-        {
-            if (array[i] != null)
-            {
-                if (array[i].getName().equals(p.getName()))
-                {
-                    array[i] = null;
-                }
-             }
-        }
-    }
-
-
-    Proceso[] actualitzar_procesos(Proceso array[])
-    {
-        for (int i =0; i< array.length; i++)
-        {
-            if (array[i] != null && !array[i].isAcabado())
-            {
-                if(array[i].getRafaga().charAt(array[i].getEstado_proc()) == 'W')
-                {
-                    array[i] = null;
-                }
-            }
-        }
-
-        return array;
-    }
 
     void FIFO()
     {
+        //Aquest mètode només funciona amb un procesador (no té en compte les prioritats tampoc)
         int p_acabats = 0;
         int time = 0;
         int total_p = entrada.size();
-
-        //El dos es el numero de processadors, falta pasasarli al constructor
-        Proceso proc_asignats[] = new Proceso[2];
-
-        for (int i =0; i< proc_asignats.length; i++)
-        {
-            proc_asignats[i] = null;
-        }
-        System.out.println("Executatant FIFO...");
+        Stack<Proceso> pila = new Stack<>();
 
         entrada.get(0).setName("0");
         entrada.get(1).setName("1");
         entrada.get(2).setName("2");
 
+        //Mentre no hagin acabat tots el processos...
         while (p_acabats != total_p)
         {
             p_acabats = 0;
-            actualitzar_procesos(proc_asignats);
-
-            for (int i = 0; i < entrada.size(); i++)
+            Proceso procesador = null;
+            if (!pila.isEmpty())
             {
+                //El proces a la posicio 0 de la pila és el primer que ha entrat
+                procesador = pila.get(0);
 
-
-                Proceso actual = entrada.get(i);
-                if (!actual.isAcabado())
+                //Si el proces actual no acabat i vol fer una W al seguent loop
+                //Deixem el processador lliure
+                if (!procesador.isAcabado())
                 {
-                    if (!actual.can_Execute(time))
+                    if (procesador.getRafaga().charAt(procesador.getEstado_proc()) == 'W')
                     {
-                        System.out.println("proces," + actual.getName() + "es pot executar al temps " + time + "amb rafaga" + actual.getRafaga());
-                        if (get_Proc_Lliure(proc_asignats, actual)) //Si hi han procesadors lliures...
-                        {
-                            System.out.println("Proces " + actual.getName() + "és pot executar");
-
-                            if (actual.getRafaga().charAt(actual.getEstado_proc()) == 'E')
-                            {
-                                actual.doExecute();
-                                actual.avanzarProceso();
-                            } else if (actual.getRafaga().charAt(actual.getEstado_proc()) == 'W') {
-                                actual.doEs();
-                                actual.avanzarProceso();
-                                set_Proc_Lliure(proc_asignats, actual);
-                            }
-                        } else
-                            {
-                                System.out.println("Proces " + actual.getName() + "No és pot executar");
-
-                                if (actual.getRafaga().charAt(actual.getEstado_proc()) == 'W') {
-                                actual.doEs();
-                                actual.avanzarProceso();
-                            } else {
-                                actual.doWait();
-                            }
-                        }
+                        pila.remove(0);
                     }
-
-
-                }
-                else
-                {
-                    System.out.println("Proces " + actual.getName() + "ha acabat ");
-                    set_Proc_Lliure(proc_asignats, actual);
-                    p_acabats++;
                 }
             }
 
-            System.out.println("TIME -->" + time);
-            if (proc_asignats[0] == null) {System.out.println("NULL````````"); }
-            else {System.out.println(proc_asignats[0].getName() + "````````");}
-            if (proc_asignats[1] == null) {System.out.println("NULL````````"); }
-            else {System.out.println(proc_asignats[1].getName() + "````````");}
+            //Recorrem la llista de procesos
+            for (int i = 0; i < entrada.size(); i++)
+            {
+                Proceso actual = entrada.get(i);
+
+                if (!actual.isAcabado())
+                {
+                    //Si el proces actual no ha acabat i pot executarse, és a dir, ja ha arribat
+                    if (!actual.can_Execute(time))
+                    {
+                        //Si vol fer un Write el pot fer (independentment de si te el procesador o no)
+                        if (actual.getRafaga().charAt(actual.getEstado_proc()) == 'W')
+                        {
+                            actual.doEs();
+                            actual.avanzarProceso();
+                        }
+                        else
+                        {
+                            //Si vol executar-se
+                            if (actual.getRafaga().charAt(actual.getEstado_proc()) == 'E')
+                            {
+                                //Si té el procesador (en cas de que no el tingui ningu retorna true)
+                                if (have_Procesor(pila,actual))
+                                {
+                                    //S'executa
+                                    actual.doExecute();
+                                    actual.avanzarProceso();
+                                }
+                                //Si no té el procesador
+                                else
+                                {
+                                    //S'espera
+                                    actual.doWait();
+                                    //El poso a la pila en cas de que no hi sigui
+                                    if (!isOnStack(pila,actual))
+                                    {
+                                        pila.push(actual);
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+                else
+                {
+                    //Si el proces ja ha acabat i encara esta a la pila...
+                    if (isOnStack(pila,actual))
+                    {
+                        //El treiem de la pila
+                        pila.remove(0);
+                    }
+
+                    p_acabats++;
+                }
+            }
             time++;
         }
     }
