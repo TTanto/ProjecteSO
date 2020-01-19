@@ -79,7 +79,7 @@ public class Data extends JDialog {
         s.llegirFitxer(_url, true);
         Data_2 d2 = new Data_2(s.getTotalProc(), comboBox1.getSelectedItem().toString(), s);
         d2.pack();
-        d2.setSize(800,400);
+        d2.setSize(600,400);
         d2.setVisible(true);
 
     }
@@ -88,6 +88,7 @@ public class Data extends JDialog {
         // add your code here if necessary
         dispose();
     }
+
 
 
 }
