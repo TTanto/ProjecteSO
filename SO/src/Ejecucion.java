@@ -34,6 +34,12 @@ public class Ejecucion {
                         //this.sfjApropiatiuNoPrioridad()
                     }
                     break;
+
+                case "prioritat":
+
+                    this.prioritatNoApropiatiu();
+
+                    break;
             }
 
         }
@@ -69,7 +75,61 @@ public class Ejecucion {
     private void robinApropiatiuPrioridad() {  //Añadir Parametro quantum?
     }
 
+    private void prioritatNoApropiatiu(){
+        int acabats = 0;
+        int arribats=0;
+        int [] prior = masPrioritario(); //array de les arribades dels procesos, ordenar per prioritat
+        while (acabats<=this.entrada.size()) {
+            if (arribats==prior.length) {//quan tots ja han arribat ya no entra més
+                for (int i = 0; i < this.entrada.size(); i++) {
+                    Proceso p = this.entrada.get(i);
+                    procesar(i);
+                    arribats++;
+                }
+            }
+            for (int i = 0; i < this.entrada.size(); i++) {
+                Proceso p = this.entrada.get(i);
+                if(p.getEstadoProceso() == 'C'){
+                    procesar(i);
+                }
 
+            }
+        }
+    }
+    private int[] masPrioritario() {
+        int[] ordenat = new int[15];
+        for (int i = 0; i < this.entrada.size(); i++) {
+            Proceso p = this.entrada.get(i);
+            ordenat[i] = p.getPrioridad();
+        }
+        for (int i = 0; i < this.entrada.size(); i++) {
+            for (int j = 0; j < this.entrada.size(); j++) {
+                if (ordenat[i] > ordenat[j]) {
+                    int variableauxiliar = ordenat[i];
+                    ordenat[i] = ordenat[j];
+                    ordenat[j] = variableauxiliar;
+                }
+            }
+        }
+        return ordenat;
+    }
+
+    private void procesar(int acabats){
+        for (int i = 0; i <= entrada.size(); i++) {
+            Proceso p = this.entrada.get(i);
+            while (p.getEstadoProceso() == 'E') {
+                p.doExecute();
+            }
+            if (p.getEstadoProceso() == 'C') {
+                p.doWait();
+            }
+            else {
+                p.doFinish();
+                acabats++;
+            }
+            p.avanzarProceso();
+        }
+    }
 
     public List<Proceso> getEntrada() {
         return entrada;
