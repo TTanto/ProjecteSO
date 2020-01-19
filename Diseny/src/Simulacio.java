@@ -137,8 +137,18 @@ public class Simulacio
         this.quantum = quantum;
     }
 
+    public int get_quantum()
+    {
+        return this.quantum;
+    }
+
+
     public int getTotalProc(){
         return this.total_p;
+    }
+
+    public List<Proceso> getListProc(){
+        return this.arrayProces;
     }
 
 }

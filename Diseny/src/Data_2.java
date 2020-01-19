@@ -12,9 +12,12 @@ public class Data_2 extends JDialog {
     private JTextField text_qua;
     private JPanel pan_quan;
     public Simulacio s;
+    public Ejecucion e;
+    public String plan;
 
 
     public Data_2(int proces, String plan, Simulacio s) {
+        this.plan = plan;
         System.out.println(plan);
         this.s = s;
         pan_quan.setVisible(false);
@@ -94,6 +97,11 @@ public class Data_2 extends JDialog {
 
         s.create_List_Proces();
         s.printAllData();
+
+        e = new Ejecucion(s.getListProc(),false,s.get_quantum(), plan);
+        Resultat r = new Resultat(e);
+        r.setVisible(true);
+
 
     }
 

@@ -3,7 +3,6 @@ public class Proceso {
     private int tEspera = 0;
     private int tRetorn = 0;
     private int tResposta = 0;
-
     private boolean acabado;
     private String name;
     private int prioridad = 1; //Mayor numero, mayor prioridad
@@ -119,6 +118,12 @@ public class Proceso {
             this.doFinish();
         }
     }
+
+    public boolean can_Execute(int time)
+    {
+        return (this.tArribada >= time);
+    }
+
     public void doEs(){
         this.resolucionProceso = this.resolucionProceso + "W";
         this.tRetorn++;
