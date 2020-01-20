@@ -2,12 +2,12 @@ import javax.swing.*;
 import java.util.List;
 
 public class Formulas_FIFO extends JFrame{
-    private int Tesp = 0;
-    private int Tres = 0;
-    private int Trtn = 0;
-    private int Tret = 0;
-    private int util = 0;
-    int temps = 0;
+    private float Tesp;
+    private float Tres;
+    private float Trtn;
+    private float Tret;
+    private float util;
+    float temps;
     private JPanel panel1;
     private JLabel util_CPU;
     private JLabel productivitat;
@@ -19,9 +19,10 @@ public class Formulas_FIFO extends JFrame{
     private JLabel sol_TesperaM;
     private JLabel TretornM;
     private JLabel sol_TretorN_Mitj;
+    private JLabel Tresposta;
 
     public Formulas_FIFO(List<Proceso> list) {
-
+        setContentPane(panel1);
         for(int i = 0; i<list.size();i++){
             Tret += list.get(i).gettRetorn();
             Tesp += list.get(i).gettEspera();
@@ -37,6 +38,7 @@ public class Formulas_FIFO extends JFrame{
         TretornM.setText(String.valueOf(Tret/list.size()));
         sol_TretorN_Mitj.setText(String.valueOf(Trtn/list.size()));
         sol_Util_CPU.setText(String.valueOf(util/temps));
+        Tresposta.setText(String.valueOf(Tres/list.size()));
 
 
 
