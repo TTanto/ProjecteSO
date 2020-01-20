@@ -4,7 +4,7 @@ public class Proceso {
     private int tRetorn = 0;
     private int tResposta = 0;
 
-    private boolean acabado;
+    private boolean acabado=false;
     private String name;
     private int prioridad = 1; //Mayor numero, mayor prioridad
     private String rafaga; // CCEEECCC
@@ -114,7 +114,8 @@ public class Proceso {
     }
     public void avanzarProceso(){
         this.estado_proc++;
-        if (this.estado_proc == this.getRafaga().length()){
+        if (this.estado_proc == (this.getRafaga().length())){
+
             this.setAcabado(true);
             this.doFinish();
         }
@@ -135,5 +136,8 @@ public class Proceso {
     }
     public void doFinish(){
         this.resolucionProceso = this.resolucionProceso + "F";
+    }
+    public void doNothing(){
+        this.resolucionProceso = this.resolucionProceso + ".";
     }
 }

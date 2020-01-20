@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 import java.util.List;
 
 public class Ejecucion {
@@ -7,7 +8,7 @@ public class Ejecucion {
     private boolean apropiatiu;
     private int quantum = -1;
     private String algoritmo;
-    private boolean prioridad = true;
+    private boolean prioridad ;
     public Ejecucion(List<Proceso> entrada, boolean apropiatiu, int quantum, String algoritmo) {
         this.entrada = entrada;
         this.apropiatiu = apropiatiu;
@@ -40,6 +41,13 @@ public class Ejecucion {
                     this.prioritatNoApropiatiu();
 
                     break;
+                case "sjf":
+                    if(prioridad){
+                        this.sjfApropiatiuPrioridad();
+                    }
+                    else{
+                        this.sjfApropiatiuNoPrioridad();
+                    }
             }
 
         }
@@ -50,7 +58,7 @@ public class Ejecucion {
                         this.sfjNoApropiatiuPrioridad();
                     }
                     else{
-                        //this.sfjApropiatiuNoPrioridad()
+                        //this.sjfApropiatiuNoPrioridad();
                     }
                     break;
             }
@@ -177,5 +185,134 @@ public class Ejecucion {
 
     public void setPrioridad(boolean prioridad) {
         this.prioridad = prioridad;
+    }
+    private void sjfApropiatiuNoPrioridad(){
+        int qProcesos=this.entrada.size(), indexProces=0, acc=-1,k=0;
+        int cont=0, temps=0;
+        boolean finished=false;
+        Proceso aux;
+        int lI[]= new int[qProcesos];
+
+        while(cont<qProcesos) {
+            for (int i=0;i<qProcesos;i++){
+                lI[i]=0;
+            }
+            for (int i = 0; i < qProcesos; i++) {
+
+
+                k=0;
+                if (!this.entrada.get(i).isAcabado() && this.entrada.get(i).getEstadoProceso()=='E'){
+                    while((this.entrada.get(i).getRafaga().length()>this.entrada.get(i).estado_proc+k) && (this.entrada.get(i).getRafaga().charAt(this.entrada.get(i).estado_proc+k) == 'E')){
+                        lI[i]++;
+                        k++;
+                    }
+                }
+                else{
+                    lI[i]=999;
+                }
+                System.out.println("indice "+i+" valor "+ lI[i]);
+            }
+            acc = 1000;
+            for (int i = 0; i < lI.length; i++) {
+                if (lI[i]<acc) {
+                    acc = lI[i];
+                    indexProces = i;
+                }
+            }
+
+            for (int i = 0; i < qProcesos; i++) {
+                if (this.entrada.get(i).gettArribada() <= temps) {
+                    if (i == indexProces && this.entrada.get(indexProces).getEstadoProceso() == 'E') {
+                        this.entrada.get(i).doExecute();
+                        this.entrada.get(i).avanzarProceso();
+                    } else {
+                        if (!this.entrada.get(i).isAcabado()) {
+                            if (this.entrada.get(i).getRafaga().charAt(this.entrada.get(i).estado_proc) == 'W') {
+                                this.entrada.get(i).doEs();
+                                this.entrada.get(i).avanzarProceso();
+                            } else {
+                                this.entrada.get(i).doWait();
+                            }
+                        }
+                    }
+                }
+                else{
+                    this.entrada.get(i).doNothing();
+                }
+            }
+            for (int i = 0; i < qProcesos; i++) {
+                if (this.entrada.get(i).isAcabado()) {
+                    cont++;
+                }
+            }
+            temps++;
+        }
+    }
+    private void sjfApropiatiuPrioridad(){
+        int qProcesos=this.entrada.size(), indexProces=0, acc=-1,k=0;
+        int cont=0, temps=0;
+        boolean finished=false;
+        Proceso aux;
+        int lI[]= new int[qProcesos];
+
+        while(cont<qProcesos) {
+            for (int i=0;i<qProcesos;i++){
+                lI[i]=0;
+            }
+            for (int i = 0; i < qProcesos; i++) {
+
+
+                k=0;
+                if (!this.entrada.get(i).isAcabado() && this.entrada.get(i).getEstadoProceso()=='E'){
+                    while((this.entrada.get(i).getRafaga().length()>this.entrada.get(i).estado_proc+k) && (this.entrada.get(i).getRafaga().charAt(this.entrada.get(i).estado_proc+k) == 'E')){
+                        lI[i]++;
+                        k++;
+                    }
+                }
+                else{
+                    lI[i]=999;
+                }
+                System.out.println("indice "+i+" valor "+ lI[i]);
+            }
+            acc = 1000;
+            for (int i = 0; i < lI.length; i++) {
+                if (lI[i]==acc) {
+                    if(this.entrada.get(i).getPrioridad()>this.entrada.get(indexProces).getPrioridad()){
+                        acc=lI[i];
+                        indexProces=i;
+                    }
+                }
+                else if(lI[i]<acc){
+                    acc = lI[i];
+                    indexProces = i;
+                }
+            }
+            for (int i = 0; i < qProcesos; i++) {
+                if (this.entrada.get(i).gettArribada() <= temps) {
+                    if (i == indexProces) {
+                        this.entrada.get(i).doExecute();
+                        this.entrada.get(i).avanzarProceso();
+                    } else {
+                        if (!this.entrada.get(i).isAcabado()) {
+                            if (this.entrada.get(i).getRafaga().charAt(this.entrada.get(i).estado_proc) == 'W') {
+                                this.entrada.get(i).doEs();
+                                this.entrada.get(i).avanzarProceso();
+                            } else {
+                                this.entrada.get(i).doWait();
+                            }
+                        }
+                    }
+                }
+                else{
+                    this.entrada.get(i).doNothing();
+                }
+            }
+            for(int i=0;i<qProcesos;i++){
+                if(this.entrada.get(i).isAcabado()){
+                    cont++;
+                }
+            }
+            temps++;
+        }
     }
 }
