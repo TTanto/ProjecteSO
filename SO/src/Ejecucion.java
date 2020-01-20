@@ -87,8 +87,8 @@ public class Ejecucion {
         int acabats = 0;
         int arribats=0;
         int [] prior = masPrioritario(); //array de les arribades dels procesos, ordenar per prioritat
-        while (acabats<=this.entrada.size()) {
-            if (arribats==prior.length) {//quan tots ja han arribat ya no entra més
+        while (acabats<this.entrada.size()) {
+            if (arribats<prior.length) {//quan tots ja han arribat ya no entra més
                 for (int i = 0; i < this.entrada.size(); i++) {
                     Proceso p = this.entrada.get(i);
                     procesar(i);
@@ -99,6 +99,9 @@ public class Ejecucion {
                 Proceso p = this.entrada.get(i);
                 if(p.getEstadoProceso() == 'C'){
                     procesar(i);
+                }
+                else if (p.getEstadoProceso() == 'F'){
+                    acabats++;
                 }
 
             }
