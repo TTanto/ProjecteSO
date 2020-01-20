@@ -28,6 +28,9 @@ public class Proceso {
         this.prioridad = prioridad;
         this.rafaga = rafaga;
     }
+    public int getTemps(){
+        return tArribada+tEspera+tRetorn;
+    }
 
     public int gettArribada() {
         return tArribada;

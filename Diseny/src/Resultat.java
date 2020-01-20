@@ -6,7 +6,9 @@ import java.util.ListIterator;
 public class Resultat  extends JDialog {
     private Ejecucion e;
     private JPanel panel1;
-    private JLabel taula;
+    private JButton veureFuncionsButton;
+    private JPanel func;
+    private JButton form;
     private JLabel[] rows;
 
 
@@ -45,9 +47,15 @@ public class Resultat  extends JDialog {
             System.out.println(i);
             }
 
+            Formulas_FIFO fifo = new Formulas_FIFO(e.entrada);
+            fifo.pack();
+            fifo.setSize(400,400);
+            fifo.setVisible(true);
 
             JFrame f;
             f=new JFrame();
+
+
             JTable table = new JTable(data,colname);
             table.setBounds(30,40,200,300);
             JScrollPane sp=new JScrollPane(table);
@@ -55,6 +63,11 @@ public class Resultat  extends JDialog {
             f.setSize(900,400);
             f.setLocationRelativeTo(null);
             f.setVisible(true);
+
+
+
+
+
 
         }
 

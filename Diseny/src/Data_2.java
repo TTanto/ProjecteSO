@@ -101,8 +101,7 @@ public class Data_2 extends JDialog {
         e = new Ejecucion(s.getListProc(),false,s.get_quantum(), plan);
         Resultat r = new Resultat(e,plan);
         r.pack();
-        r.setSize(400,400);
-        r.setVisible(true);
+
 
 
     }
