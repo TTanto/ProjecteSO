@@ -60,6 +60,8 @@ public class Ejecucion {
                     else{
                         //this.sjfApropiatiuNoPrioridad();
                     }
+                case "FIFO"
+                    this.algoritme_FCFS();
                     break;
             }
 
@@ -315,4 +317,50 @@ public class Ejecucion {
             temps++;
         }
     }
-}
+
+    private void algoritme_FCFS(){
+
+        int acabats = 0;
+        int arribats = 0;
+        int [] ordenats = ordenarFIFO();
+
+        while (acabats<this.entrada.size()){
+            if (arribats < ordenats.length) {
+
+                for (int i = 0; i < this.entrada.size(); i++) {
+
+                    Proceso p = this.entrada.get(i);
+                    procesar(i);
+                    arribats++;
+                }
+
+                for (int i = 0; i < this.entrada.size(); i++) {
+                    Proceso p = this.entrada.get(i);
+                    if(p.getEstadoProceso() == 'C'){
+                        procesar(i);
+                    }
+
+                }
+            }
+
+        }
+    }
+
+    private int[] ordenarFIFO() {
+        int[] ordenat = new int[15];
+        for (int i = 0; i < this.entrada.size(); i++) {
+            Proceso p = this.entrada.get(i);
+            ordenat[i] = p.gettArribada();
+        }
+        for (int i = 0; i < this.entrada.size(); i++) {
+            for (int j = 0; j < this.entrada.size(); j++) {
+                if (ordenat[i] > ordenat[j]) {
+                    int variableauxiliar = ordenat[i];
+                    ordenat[i] = ordenat[j];
+                    ordenat[j] = variableauxiliar;
+                }
+            }
+        }
+        return ordenat;
+    }
+
