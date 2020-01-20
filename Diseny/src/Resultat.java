@@ -1,3 +1,4 @@
+import javax.print.DocFlavor;
 import javax.swing.*;
 import java.util.List;
 import java.util.ListIterator;
@@ -9,35 +10,70 @@ public class Resultat  extends JDialog {
     private JLabel[] rows;
 
 
-    public Resultat(Ejecucion e, String plan) {
+    public Resultat(Ejecucion e, String plan)
+    {
+        this.e = e;
         setContentPane(panel1);
-        String graella = "";
-        rows = new JLabel[e.entrada.size()];
-        //show_Results();
-        if (plan.equals("FCFS/FIFO")) {
-            e.process();
-            for (int i = 0; i < e.entrada.size(); i++) {
-                System.out.println(e.entrada.get(i).getResolucionProceso());
-                graella += i + "     " + e.entrada.get(i).getResolucionProceso()+"\n";
 
+        rows = new JLabel[e.entrada.size()];
+
+        if (plan.equals("FCFS/FIFO"))
+        {
+            e.process();
+            int col = get_max_columns();
+            int rows = e.entrada.size();
+
+            String data[][] = new String[rows][col];
+            String[] colname = new String[col];
+
+            for (int i = 0; i < colname.length; i++)
+            {
+                colname[i] = String.valueOf(i);
+                System.out.println(colname[i]);
             }
-            System.out.println(graella);
-            taula.setText(graella);
-            taula.setVisible(true);
+
+            for (int i = 0; i < rows; i++)
+            {
+                Proceso act = e.entrada.get(i);
+                System.out.println(act.getResolucionProceso());
+
+                for (int j = 0; j < act.getResolucionProceso().length(); j++)
+                {
+                    data[i][j] = String.valueOf(act.getResolucionProceso().charAt(j));
+                    System.out.printf("%s",data[i][j]);
+                }
+            System.out.println(i);
+            }
+
+
+            JFrame f;
+            f=new JFrame();
+            JTable table = new JTable(data,colname);
+            table.setBounds(30,40,200,300);
+            JScrollPane sp=new JScrollPane(table);
+            f.add(sp);
+            f.setSize(900,400);
+            f.setLocationRelativeTo(null);
+            f.setVisible(true);
 
         }
 
     }
 
+    int get_max_columns()
+    {
+        int max = 0;
+        for (int i = 0; i < e.entrada.size(); i++)
+        {
+            int llargada_proces = e.entrada.get(i).getResolucionProceso().length();
+           if (llargada_proces > max)
+           {
+               max = llargada_proces;
+           }
+        }
 
-//    public void show_Results()
-//    {
-//        e.process();
-//        for (int i =0; i < e.entrada.size(); i++)
-//        {
-//            System.out.println(e.entrada.get(i).getResolucionProceso());
-//        }
-//    }
+        return max;
     }
+}
 
 

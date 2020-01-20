@@ -81,7 +81,7 @@ public class Ejecucion {
     {
         //Aquest mètode només funciona amb un procesador (no té en compte les prioritats tampoc)
         int p_acabats = 0;
-        int time = 0;
+        int time = 1;
         int total_p = entrada.size();
         Stack<Proceso> pila = new Stack<>();
 
@@ -151,6 +151,10 @@ public class Ejecucion {
                                 }
                             }
                         }
+                    }
+                    else
+                    {
+                        actual.doNoHeArribat();
                     }
                 }
                 else

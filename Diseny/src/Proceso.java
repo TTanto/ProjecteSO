@@ -133,6 +133,12 @@ public class Proceso {
         this.tRetorn++;
     }
 
+
+    public void doNoHeArribat() {
+        this.resolucionProceso = this.resolucionProceso + "-";
+    }
+
+
     public void doWait(){
         this.resolucionProceso = this.resolucionProceso + "P";
         this.tEspera++;
